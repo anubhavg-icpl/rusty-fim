@@ -11,9 +11,9 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs;
-use std::io::Write;
+// use std::io::Write; // unused
 use std::path::{Path, PathBuf};
-use tracing::{debug, info, warn};
+use tracing::{debug, info};
 
 /// Report generation configuration
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -11,7 +11,7 @@ use anyhow::{Context, Result};
 use chrono::{DateTime, Utc};
 use rayon::prelude::*;
 use serde::{Deserialize, Serialize};
-use std::collections::HashSet;
+// use std::collections::HashSet; // unused
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};

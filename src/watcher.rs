@@ -5,12 +5,12 @@
 
 use anyhow::{Context, Result};
 use crossbeam_channel::{unbounded, Receiver, Sender};
-use notify::{Event, EventKind, RecommendedWatcher, RecursiveMode, Watcher};
+use notify::{EventKind, RecommendedWatcher, RecursiveMode, Watcher};
 use notify_debouncer_full::{
     new_debouncer, DebounceEventResult, DebouncedEvent, Debouncer, FileIdMap,
 };
 use serde::{Deserialize, Serialize};
-use std::collections::HashSet;
+// use std::collections::HashSet; // unused
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 use std::thread;
