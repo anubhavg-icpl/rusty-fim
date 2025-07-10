@@ -1,0 +1,176 @@
+# Rusty FIM Configuration File
+# 
+# This file contains all configuration options for the File Integrity Monitoring system.
+# Copy this file and customize it for your environment.
+
+# Paths to monitor for file integrity
+# These can be files or directories. Directories are scanned recursively by default.
+monitor_paths = [
+    "/etc",                    # System configuration files
+    "/usr/local/bin",          # Local binaries
+    "/home/user/important",    # User-specific critical files
+    # "/var/log",              # Uncomment to monitor log files (not recommended)
+]
+
+# Patterns to exclude from monitoring (glob format)
+# Use these to avoid monitoring temporary files, build artifacts, etc.
+exclude_patterns = [
+    # Build and development artifacts
+    "**/target/**",            # Rust build directory
+    "**/node_modules/**",      # Node.js dependencies
+    "**/.git/**",             # Git repository data
+    "**/build/**",            # General build directories
+    "**/__pycache__/**",      # Python cache
+    "**/.pytest_cache/**",    # Pytest cache
+    
+    # Temporary and cache files
+    "**/*.tmp",               # Temporary files
+    "**/*.temp",              # Temporary files
+    "**/*.cache",             # Cache files
+    "**/*.log",               # Log files (usually change frequently)
+    "**/*.pid",               # Process ID files
+    "**/*.lock",              # Lock files
+    "**/*~",                  # Backup files
+    "**/.DS_Store",           # macOS metadata
+    "**/Thumbs.db",           # Windows thumbnails
+    
+    # Swap and editor files
+    "**/*.swp",               # Vim swap files
+    "**/*.swo",               # Vim swap files
+    "**/.#*",                 # Emacs temporary files
+    
+    # System directories (usually not needed)
+    # "/proc/**",             # Linux process filesystem
+    # "/sys/**",              # Linux system filesystem
+    # "/dev/**",              # Device files
+]
+
+# Database configuration
+memory_database = false        # Set to true for in-memory database (no persistence)
+
+# Scanning performance settings
+scan_threads = 8              # Number of parallel scanning threads (null = auto-detect)
+max_file_size = 1073741824    # Maximum file size to process in bytes (1GB)
+
+# Real-time monitoring
+enable_realtime = true        # Enable filesystem event monitoring
+scan_interval = 3600          # Periodic scan interval in seconds (1 hour)
+
+# Hash algorithm configuration
+[hash_config]
+use_blake3 = true             # Primary hash algorithm (recommended)
+use_sha256 = false            # Legacy SHA-256 support
+use_sha1 = false              # Legacy SHA-1 support (insecure)
+use_md5 = false               # Legacy MD5 support (insecure)
+use_mmap = true               # Use memory mapping for large files
+parallel_threshold = 1048576  # Minimum file size for parallel hashing (1MB)
+
+# Filesystem watcher configuration
+[watch_config]
+recursive = true              # Monitor subdirectories recursively
+debounce_timeout = 250        # Debounce timeout in milliseconds
+max_events_per_second = 1000  # Maximum events per second before throttling
+
+# Additional ignore patterns for real-time monitoring
+ignore_patterns = [
+    "*.tmp",
+    "*.swp",
+    "*.lock",
+    "*~",
+    ".DS_Store",
+]
+
+ignore_extensions = [
+    "log",
+    "cache",
+    "pid",
+]
+
+ignore_directories = [
+    ".git",
+    ".svn",
+    "node_modules",
+    "__pycache__",
+    ".pytest_cache",
+    "target",
+]
+
+# Example configurations for different use cases:
+
+# [production_server]
+# # Configuration for production servers
+# monitor_paths = [
+#     "/etc",
+#     "/usr/bin",
+#     "/usr/sbin",
+#     "/opt/application",
+# ]
+# exclude_patterns = [
+#     "/var/log/**",
+#     "/tmp/**",
+#     "/var/tmp/**",
+# ]
+# enable_realtime = true
+# scan_interval = 1800  # 30 minutes
+# 
+# [hash_config]
+# use_blake3 = true
+# use_sha256 = true     # Enable for compliance requirements
+# use_mmap = true
+
+# [development_environment]
+# # Configuration for development machines
+# monitor_paths = [
+#     "/home/user/projects/critical",
+#     "/etc/important-config",
+# ]
+# exclude_patterns = [
+#     "**/target/**",
+#     "**/node_modules/**",
+#     "**/.git/**",
+#     "**/build/**",
+#     "**/*.log",
+# ]
+# enable_realtime = true
+# scan_interval = 7200  # 2 hours
+# memory_database = true  # For testing
+
+# [high_security]
+# # Configuration for high-security environments
+# monitor_paths = [
+#     "/etc",
+#     "/usr/bin",
+#     "/usr/sbin",
+#     "/boot",
+#     "/home/user/secure-documents",
+# ]
+# exclude_patterns = [
+#     "/var/log/**",  # Monitor logs separately if needed
+# ]
+# enable_realtime = true
+# scan_interval = 300   # 5 minutes for frequent checks
+# 
+# [hash_config]
+# use_blake3 = true
+# use_sha256 = true     # Dual hashing for extra security
+# use_sha1 = false      # Disable insecure algorithms
+# use_md5 = false
+# parallel_threshold = 65536  # Lower threshold for faster detection
+
+# [compliance_mode]
+# # Configuration for compliance requirements (e.g., PCI DSS, HIPAA)
+# monitor_paths = [
+#     "/etc/compliance-config",
+#     "/opt/application/data",
+#     "/var/log/audit",
+# ]
+# 
+# [hash_config]
+# use_blake3 = true
+# use_sha256 = true     # Required by many compliance frameworks
+# use_sha1 = false      # Avoid deprecated algorithms
+# use_md5 = false
+# 
+# # Aggressive monitoring for compliance
+# enable_realtime = true
+# scan_interval = 900   # 15 minutes
