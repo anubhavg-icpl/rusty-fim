@@ -342,11 +342,20 @@ impl FimEngine {
 
     /// Process real-time events
     pub fn process_realtime_events(&mut self) -> Result<()> {
-        let watcher = self.watcher.as_ref()
-            .ok_or_else(|| anyhow::anyhow!("Real-time monitoring not enabled"))?;
+        if self.watcher.is_none() {
+            return Err(anyhow::anyhow!("Real-time monitoring not enabled"));
+        }
 
         while *self.is_running.lock().unwrap() {
-            if let Some(event) = watcher.try_next_event() {
+            // Get event from watcher
+            let event = if let Some(watcher) = self.watcher.as_ref() {
+                watcher.try_next_event()
+            } else {
+                None
+            };
+            
+            // Handle event if present
+            if let Some(event) = event {
                 if let Err(e) = self.handle_realtime_event(event) {
                     error!("Error handling real-time event: {}", e);
                 }
