@@ -89,7 +89,7 @@ pub struct ScanResults {
 }
 
 /// File integrity change types
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Hash, Eq, PartialEq)]
 pub enum ChangeType {
     Added,
     Modified,
