@@ -4,14 +4,14 @@
 //! legacy algorithm support (SHA-256, SHA-1, MD5) for compatibility.
 
 use anyhow::{Context, Result};
-use blake3::{Hash as Blake3Hash, Hasher as Blake3Hasher};
+use blake3::Hasher as Blake3Hasher;
 use memmap2::Mmap;
 use rayon::prelude::*;
 use sha2::{Digest, Sha256};
 use std::fs::File;
-use std::io::{self, BufReader, Read};
+use std::io::{BufReader, Read};
 use std::path::Path;
-use tracing::{debug, warn};
+use tracing::debug;
 
 /// File hash container supporting multiple algorithms
 #[derive(Debug, Clone)]

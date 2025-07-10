@@ -5,7 +5,7 @@
 
 use anyhow::{Context, Result};
 use chrono::{DateTime, Utc};
-use rusqlite::{params, Connection, OptionalExtension, Transaction};
+use rusqlite::{params, Connection, OptionalExtension};
 use serde::{Deserialize, Serialize};
 use std::path::{Path, PathBuf};
 use tracing::{debug, info, warn};
@@ -71,7 +71,7 @@ impl FimDb {
         conn.pragma_update(None, "cache_size", "-64000")?; // 64MB cache
         conn.pragma_update(None, "temp_store", "MEMORY")?;
         
-        let mut db = Self {
+        let db = Self {
             conn,
             memory_mode: memory,
             transaction_count: 0,

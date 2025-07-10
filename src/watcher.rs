@@ -316,7 +316,6 @@ impl FimWatcher {
 
     /// Check if path should be ignored based on configuration
     fn should_ignore_path(path: &Path, config: &WatchConfig) -> bool {
-        let path_str = path.to_string_lossy();
         let filename = path.file_name().map(|n| n.to_string_lossy()).unwrap_or_default();
         
         // Check ignore patterns
