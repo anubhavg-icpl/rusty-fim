@@ -637,8 +637,12 @@ impl AlertGenerator {
                 format!("File content modified: {}", change.path.display())
             }
             ChangeType::PermissionChanged => {
-                let old_perm = change.old_entry.as_ref().map(|e| &e.perm).unwrap_or(&"unknown".to_string());
-                let new_perm = change.new_entry.as_ref().map(|e| &e.perm).unwrap_or(&"unknown".to_string());
+                let old_perm = change.old_entry.as_ref()
+                    .map(|e| e.perm.as_str())
+                    .unwrap_or("unknown");
+                let new_perm = change.new_entry.as_ref()
+                    .map(|e| e.perm.as_str())
+                    .unwrap_or("unknown");
                 format!("Permissions changed: {} ({} -> {})", 
                     change.path.display(), old_perm, new_perm)
             }
