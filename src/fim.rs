@@ -238,9 +238,9 @@ impl FimEngine {
 
         let start_scan = Instant::now();
         
-        // Process files in parallel
+        // Process files sequentially (SQLite is not thread-safe)
         let scan_results: Vec<_> = files_to_scan
-            .par_iter()
+            .iter()
             .map(|path| self.scan_single_file(path))
             .collect();
 

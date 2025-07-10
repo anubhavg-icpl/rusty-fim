@@ -237,7 +237,7 @@ impl FileHasher {
     }
 
     /// Batch hash multiple files in parallel
-    pub fn hash_files_parallel<P: AsRef<Path>>(&self, paths: &[P]) -> Vec<Result<FileHashes>> {
+    pub fn hash_files_parallel<P: AsRef<Path> + Sync>(&self, paths: &[P]) -> Vec<Result<FileHashes>> {
         paths.par_iter()
             .map(|path| self.hash_file(path))
             .collect()
@@ -262,7 +262,7 @@ impl ChecksumVerifier {
     }
 
     /// Batch verify multiple files
-    pub fn batch_verify<P: AsRef<Path>>(&self, files: &[(P, &str)]) -> Vec<Result<bool>> {
+    pub fn batch_verify<P: AsRef<Path> + Sync>(&self, files: &[(P, &str)]) -> Vec<Result<bool>> {
         files.par_iter()
             .map(|(path, expected)| self.hasher.verify_file(path, expected))
             .collect()
@@ -278,11 +278,11 @@ pub mod utils {
         let hasher = FileHasher::blake3_only();
         let mut combined_hasher = Blake3Hasher::new();
         
-        let entries: Result<Vec<_>> = std::fs::read_dir(dir_path.as_ref())?
+        let entries: Result<Vec<std::fs::DirEntry>, std::io::Error> = std::fs::read_dir(dir_path.as_ref())?
             .collect();
         
-        let mut entries = entries?;
-        entries.sort_by(|a, b| a.path().cmp(&b.path()));
+        let mut entries = entries.context("Failed to collect directory entries")?;
+        entries.sort_by(|a: &std::fs::DirEntry, b: &std::fs::DirEntry| a.path().cmp(&b.path()));
         
         for entry in entries {
             let path = entry.path();
