@@ -278,7 +278,8 @@ impl FimWatcher {
 
     /// Convert notify event to FIM event
     fn convert_event(event: DebouncedEvent, config: &WatchConfig) -> Option<FimEvent> {
-        let path = &event.path;
+        // Get the first path from the event
+        let path = event.event.paths.first()?;
         
         // Apply ignore filters
         if Self::should_ignore_path(path, config) {
@@ -293,7 +294,7 @@ impl FimWatcher {
             None
         };
 
-        let kind = match event.kind {
+        let kind = match event.event.kind {
             EventKind::Create(_) => FimEventKind::Created,
             EventKind::Modify(_) => FimEventKind::Modified,
             EventKind::Remove(_) => FimEventKind::Deleted,
