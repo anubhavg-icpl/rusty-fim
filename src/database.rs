@@ -410,7 +410,7 @@ pub enum RowMode {
 }
 
 /// Database statistics
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FimStats {
     pub total_files: i32,
     pub scanned_files: i32,

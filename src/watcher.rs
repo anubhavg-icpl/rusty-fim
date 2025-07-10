@@ -17,6 +17,27 @@ use std::thread;
 use std::time::Duration;
 use tracing::{debug, error, info, warn};
 
+/// Serde module for Duration serialization
+mod duration_serde {
+    use serde::{Deserialize, Deserializer, Serialize, Serializer};
+    use std::time::Duration;
+
+    pub fn serialize<S>(duration: &Duration, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        duration.as_millis().serialize(serializer)
+    }
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Duration, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let millis = u64::deserialize(deserializer)?;
+        Ok(Duration::from_millis(millis))
+    }
+}
+
 /// File system event types for FIM
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum FimEventKind {
@@ -40,7 +61,7 @@ pub struct FimEvent {
 }
 
 /// Watch configuration
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WatchConfig {
     /// Paths to monitor
     pub paths: Vec<PathBuf>,
@@ -50,7 +71,8 @@ pub struct WatchConfig {
     pub ignore_extensions: Vec<String>,
     /// Directories to ignore
     pub ignore_directories: Vec<String>,
-    /// Debounce timeout for rapid file changes
+    /// Debounce timeout for rapid file changes (in milliseconds)
+    #[serde(with = "duration_serde")]
     pub debounce_timeout: Duration,
     /// Whether to monitor subdirectories recursively
     pub recursive: bool,

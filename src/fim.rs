@@ -18,6 +18,27 @@ use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 use tracing::{debug, error, info};
 
+/// Serde module for Duration serialization
+mod duration_serde {
+    use serde::{Deserialize, Deserializer, Serialize, Serializer};
+    use std::time::Duration;
+
+    pub fn serialize<S>(duration: &Duration, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        duration.as_millis().serialize(serializer)
+    }
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Duration, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let millis = u64::deserialize(deserializer)?;
+        Ok(Duration::from_millis(millis))
+    }
+}
+
 /// FIM operation modes
 #[derive(Debug, Clone, PartialEq)]
 pub enum FimMode {
@@ -77,13 +98,14 @@ impl Default for FimConfig {
 }
 
 /// FIM scan results
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScanResults {
     pub files_scanned: u64,
     pub files_added: u64,
     pub files_modified: u64,
     pub files_deleted: u64,
     pub errors: u64,
+    #[serde(with = "duration_serde")]
     pub scan_duration: Duration,
     pub total_size: u64,
 }

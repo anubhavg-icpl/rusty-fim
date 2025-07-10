@@ -7,6 +7,7 @@ use anyhow::{Context, Result};
 use blake3::Hasher as Blake3Hasher;
 use memmap2::Mmap;
 use rayon::prelude::*;
+use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::fs::File;
 use std::io::{BufReader, Read};
@@ -23,7 +24,7 @@ pub struct FileHashes {
 }
 
 /// Hashing configuration options
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HashConfig {
     pub use_blake3: bool,
     pub use_sha256: bool,
