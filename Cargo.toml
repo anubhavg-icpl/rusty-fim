@@ -1,0 +1,64 @@
+[package]
+name = "rusty-fim"
+version = "0.1.0"
+edition = "2021"
+description = "High-performance File Integrity Monitoring system in Rust"
+license = "MIT OR Apache-2.0"
+keywords = ["security", "fim", "monitoring", "integrity", "filesystem"]
+
+[dependencies]
+# Database
+rusqlite = { version = "0.31", features = ["bundled", "chrono", "serde_json"] }
+
+# File hashing - BLAKE3 for speed, SHA2 for compatibility
+blake3 = { version = "1.5", features = ["rayon", "mmap"] }
+sha2 = "0.10"
+
+# Filesystem monitoring
+notify = { version = "6.1", features = ["macos_kqueue"] }
+notify-debouncer-full = "0.3"
+
+# Async runtime and utilities
+tokio = { version = "1.35", features = ["full"] }
+futures = "0.3"
+
+# Serialization and configuration
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+
+# Logging and error handling
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow = "1.0"
+thiserror = "1.0"
+
+# CLI
+clap = { version = "4.4", features = ["derive"] }
+
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+
+# File metadata and permissions
+libc = "0.2"
+
+# Additional utilities
+glob = "0.3"
+num_cpus = "1.16"
+
+# Performance and utilities
+rayon = "1.8"
+crossbeam-channel = "0.5"
+memmap2 = "0.9"
+
+[dev-dependencies]
+tempfile = "3.8"
+criterion = "0.5"
+
+[[bin]]
+name = "fim"
+path = "src/main.rs"
+
+[[bench]]
+name = "hash_benchmark"
+harness = false
