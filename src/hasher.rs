@@ -64,7 +64,7 @@ impl FileHasher {
     }
 
     /// Create hasher with all algorithms for compatibility
-    pub fn all_algorithms() -> Self {
+    pub fn _all_algorithms() -> Self {
         Self::new(HashConfig {
             use_blake3: true,
             use_sha256: true,
@@ -237,7 +237,7 @@ impl FileHasher {
     }
 
     /// Batch hash multiple files in parallel
-    pub fn hash_files_parallel<P: AsRef<Path> + Sync>(&self, paths: &[P]) -> Vec<Result<FileHashes>> {
+    pub fn _hash_files_parallel<P: AsRef<Path> + Sync>(&self, paths: &[P]) -> Vec<Result<FileHashes>> {
         paths.par_iter()
             .map(|path| self.hash_file(path))
             .collect()
@@ -245,11 +245,12 @@ impl FileHasher {
 }
 
 /// Specialized hasher for checksum verification
-pub struct ChecksumVerifier {
+pub struct _ChecksumVerifier {
     hasher: FileHasher,
 }
 
-impl ChecksumVerifier {
+#[allow(dead_code)]
+impl _ChecksumVerifier {
     pub fn new() -> Self {
         Self {
             hasher: FileHasher::blake3_only(),
@@ -274,7 +275,7 @@ pub mod utils {
     use super::*;
 
     /// Calculate directory checksum (recursive hash of all files)
-    pub fn directory_checksum<P: AsRef<Path>>(dir_path: P) -> Result<String> {
+    pub fn _directory_checksum<P: AsRef<Path>>(dir_path: P) -> Result<String> {
         let hasher = FileHasher::blake3_only();
         let mut combined_hasher = Blake3Hasher::new();
         
@@ -297,12 +298,12 @@ pub mod utils {
     }
 
     /// Compare two hash sets for changes
-    pub fn compare_hashes(old: &FileHashes, new: &FileHashes) -> bool {
+    pub fn _compare_hashes(old: &FileHashes, new: &FileHashes) -> bool {
         old.blake3 == new.blake3
     }
 
     /// Convert hash to short display format
-    pub fn short_hash(hash: &str, length: usize) -> String {
+    pub fn _short_hash(hash: &str, length: usize) -> String {
         if hash.len() > length {
             format!("{}...", &hash[..length])
         } else {
@@ -368,15 +369,15 @@ mod tests {
         std::fs::write(&file1_path, b"Content 1")?;
         std::fs::write(&file2_path, b"Content 2")?;
         
-        let checksum1 = utils::directory_checksum(temp_dir.path())?;
+        let checksum1 = utils::_directory_checksum(temp_dir.path())?;
         
         // Checksum should be deterministic
-        let checksum2 = utils::directory_checksum(temp_dir.path())?;
+        let checksum2 = utils::_directory_checksum(temp_dir.path())?;
         assert_eq!(checksum1, checksum2);
         
         // Modifying a file should change the checksum
         std::fs::write(&file1_path, b"Modified content")?;
-        let checksum3 = utils::directory_checksum(temp_dir.path())?;
+        let checksum3 = utils::_directory_checksum(temp_dir.path())?;
         assert_ne!(checksum1, checksum3);
         
         Ok(())
@@ -396,7 +397,7 @@ mod tests {
         let paths: Vec<_> = temp_files.iter().map(|f| f.path()).collect();
         
         let hasher = FileHasher::blake3_only();
-        let results = hasher.hash_files_parallel(&paths);
+        let results = hasher._hash_files_parallel(&paths);
         
         assert_eq!(results.len(), 5);
         for result in results {

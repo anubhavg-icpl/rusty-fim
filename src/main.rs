@@ -8,18 +8,15 @@ mod fim;
 mod hasher;
 mod watcher;
 
-use crate::fim::{FimConfig, FimEngine, FimMode, ChangeType};
-use crate::hasher::HashConfig;
-use crate::watcher::WatchConfig;
+use crate::fim::{FimConfig, FimEngine, ChangeType};
 
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
-use serde_json;
 use std::path::PathBuf;
 use std::sync::Arc;
 use std::time::Duration;
 use tokio::signal;
-use tracing::{error, info, warn, Level};
+use tracing::{error, info, Level};
 use tracing_subscriber;
 
 #[derive(Parser)]
@@ -278,7 +275,7 @@ async fn handle_scan(
     mut config: FimConfig,
     paths: Vec<PathBuf>,
     changes_only: bool,
-    format: String,
+    _format: String,
 ) -> Result<()> {
     if !paths.is_empty() {
         config.monitor_paths = paths;

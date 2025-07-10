@@ -215,7 +215,7 @@ pub mod integration {
     /// Simple callback-based FIM monitor
     pub struct CallbackMonitor {
         engine: FimEngine,
-        callback: Box<dyn Fn(&FileChange) + Send + Sync>,
+        _callback: Box<dyn Fn(&FileChange) + Send + Sync>,
     }
 
     impl CallbackMonitor {
@@ -229,7 +229,7 @@ pub mod integration {
             
             Ok(Self {
                 engine,
-                callback: Box::new(|_| {}), // Placeholder
+                _callback: Box::new(|_| {}), // Placeholder
             })
         }
 

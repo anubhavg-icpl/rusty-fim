@@ -11,7 +11,7 @@ use std::path::{Path, PathBuf};
 use tracing::{debug, info, warn};
 
 pub const FIMDB_OK: i32 = 0;
-pub const FIMDB_ERR: i32 = -1;
+pub const _FIMDB_ERR: i32 = -1;
 
 /// File entry data structure
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -42,7 +42,7 @@ pub struct FimEntry {
 /// FIM Database handle
 pub struct FimDb {
     conn: Connection,
-    memory_mode: bool,
+    _memory_mode: bool,
     transaction_count: usize,
 }
 
@@ -73,7 +73,7 @@ impl FimDb {
         
         let db = Self {
             conn,
-            memory_mode: memory,
+            _memory_mode: memory,
             transaction_count: 0,
         };
 
@@ -244,7 +244,7 @@ impl FimDb {
     }
 
     /// Check if inode exists
-    pub fn get_inode(&self, inode: u64, dev: u64) -> Result<bool> {
+    pub fn _get_inode(&self, inode: u64, dev: u64) -> Result<bool> {
         let count: i32 = self.conn.query_row(
             "SELECT COUNT(*) FROM file_data WHERE inode = ?1 AND dev = ?2",
             params![inode, dev],
@@ -255,7 +255,7 @@ impl FimDb {
     }
 
     /// Get all paths for a given inode
-    pub fn get_paths_from_inode(&self, inode: u64, dev: u64) -> Result<Vec<String>> {
+    pub fn _get_paths_from_inode(&self, inode: u64, dev: u64) -> Result<Vec<String>> {
         let mut stmt = self.conn.prepare(
             "SELECT path FROM file_data WHERE inode = ?1 AND dev = ?2"
         )?;
@@ -325,7 +325,7 @@ impl FimDb {
     }
 
     /// Delete entries in path range (alphabetically sorted)
-    pub fn delete_range(&mut self, start: &str, top: &str) -> Result<i32> {
+    pub fn _delete_range(&mut self, start: &str, top: &str) -> Result<i32> {
         let deleted = self.conn.execute(
             "DELETE FROM file_data WHERE path >= ?1 AND path <= ?2",
             params![start, top],
@@ -336,7 +336,7 @@ impl FimDb {
     }
 
     /// Get count of entries in range
-    pub fn get_count_range(&self, start: &str, top: &str) -> Result<i32> {
+    pub fn _get_count_range(&self, start: &str, top: &str) -> Result<i32> {
         let count: i32 = self.conn.query_row(
             "SELECT COUNT(*) FROM file_data WHERE path >= ?1 AND path <= ?2",
             params![start, top],
@@ -347,10 +347,10 @@ impl FimDb {
     }
 
     /// Get first or last row path
-    pub fn get_row_path(&self, mode: RowMode) -> Result<Option<String>> {
+    pub fn _get_row_path(&self, mode: _RowMode) -> Result<Option<String>> {
         let sql = match mode {
-            RowMode::First => "SELECT path FROM file_data ORDER BY path ASC LIMIT 1",
-            RowMode::Last => "SELECT path FROM file_data ORDER BY path DESC LIMIT 1",
+            _RowMode::First => "SELECT path FROM file_data ORDER BY path ASC LIMIT 1",
+            _RowMode::Last => "SELECT path FROM file_data ORDER BY path DESC LIMIT 1",
         };
         
         let path = self.conn.query_row(sql, [], |row| {
@@ -404,7 +404,7 @@ impl FimDb {
 
 /// Row selection mode
 #[derive(Debug, Clone)]
-pub enum RowMode {
+pub enum _RowMode {
     First,
     Last,
 }

@@ -9,7 +9,6 @@ use crate::watcher::{FimEvent, FimEventKind, FimWatcher, WatchConfig};
 
 use anyhow::{Context, Result};
 use chrono::{DateTime, Utc};
-use rayon::prelude::*;
 use serde::{Deserialize, Serialize};
 // use std::collections::HashSet; // unused
 use std::fs;
@@ -41,6 +40,7 @@ mod duration_serde {
 
 /// FIM operation modes
 #[derive(Debug, Clone, PartialEq)]
+#[allow(dead_code)]
 pub enum FimMode {
     /// Initial baseline scan
     Baseline,
@@ -206,7 +206,7 @@ impl FimEngine {
     /// Perform baseline scan
     pub fn baseline_scan(&mut self) -> Result<ScanResults> {
         info!("Starting baseline scan");
-        let start_time = Instant::now();
+        let _start_time = Instant::now();
         
         // Clear existing data
         self.database.set_all_unscanned()?;
@@ -294,7 +294,7 @@ impl FimEngine {
     /// Perform incremental scan
     pub fn incremental_scan(&mut self) -> Result<ScanResults> {
         info!("Starting incremental scan");
-        let start_time = Instant::now();
+        let _start_time = Instant::now();
         
         // Mark all entries as unscanned
         self.database.set_all_unscanned()?;
@@ -349,7 +349,7 @@ impl FimEngine {
         results.files_deleted += deleted as u64;
 
         self.database.commit_transaction()?;
-        results.scan_duration = start_time.elapsed();
+        results.scan_duration = _start_time.elapsed();
 
         info!(
             "Incremental scan completed: {} scanned, {} added, {} modified, {} deleted",

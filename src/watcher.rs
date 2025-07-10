@@ -247,7 +247,7 @@ impl FimWatcher {
     }
 
     /// Get next FIM event (blocking)
-    pub fn next_event(&self) -> Result<FimEvent> {
+    pub fn _next_event(&self) -> Result<FimEvent> {
         self.event_receiver
             .recv()
             .context("Failed to receive event")
@@ -259,7 +259,7 @@ impl FimWatcher {
     }
 
     /// Get event receiver for custom processing
-    pub fn event_receiver(&self) -> &Receiver<FimEvent> {
+    pub fn _event_receiver(&self) -> &Receiver<FimEvent> {
         &self.event_receiver
     }
 
@@ -386,9 +386,9 @@ impl FimWatcher {
     }
 
     /// Get statistics about the watcher
-    pub fn get_stats(&self) -> WatcherStats {
+    pub fn _get_stats(&self) -> _WatcherStats {
         let counter = self.event_counter.lock().unwrap();
-        WatcherStats {
+        _WatcherStats {
             is_running: *self.is_running.lock().unwrap(),
             events_processed: counter.count,
             paths_watched: self.config.paths.len(),
@@ -398,7 +398,7 @@ impl FimWatcher {
 
 /// Watcher statistics
 #[derive(Debug, Clone)]
-pub struct WatcherStats {
+pub struct _WatcherStats {
     pub is_running: bool,
     pub events_processed: u32,
     pub paths_watched: usize,
@@ -411,14 +411,15 @@ impl Drop for FimWatcher {
 }
 
 /// Batch event processor for efficient handling
-pub struct EventBatcher {
+pub struct _EventBatcher {
     events: Vec<FimEvent>,
     max_batch_size: usize,
     timeout: Duration,
     last_flush: std::time::Instant,
 }
 
-impl EventBatcher {
+#[allow(dead_code)]
+impl _EventBatcher {
     pub fn new(max_batch_size: usize, timeout: Duration) -> Self {
         Self {
             events: Vec::with_capacity(max_batch_size),
@@ -491,7 +492,7 @@ mod tests {
 
     #[test]
     fn test_event_batcher() {
-        let mut batcher = EventBatcher::new(3, Duration::from_millis(100));
+        let mut batcher = _EventBatcher::new(3, Duration::from_millis(100));
         
         let event = FimEvent {
             kind: FimEventKind::Created,
@@ -521,7 +522,7 @@ mod tests {
         };
         
         let watcher = FimWatcher::new(config)?;
-        let stats = watcher.get_stats();
+        let stats = watcher._get_stats();
         
         assert!(!stats.is_running);
         assert_eq!(stats.paths_watched, 1);
