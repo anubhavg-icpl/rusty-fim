@@ -3,7 +3,7 @@
 A modern, blazingly fast, and reliable file integrity monitoring (FIM) system written in Rust. Built for security professionals, system administrators, and anyone who needs to monitor critical files for unauthorized changes.
 
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](#license)
-[![Build Status](https://github.com/your-username/rusty-fim/workflows/CI/badge.svg)](https://github.com/your-username/rusty-fim/actions)
+[![Build Status](https://github.com/anubhavg-icpl/rusty-fim/workflows/CI/badge.svg)](https://github.com/anubhavg-icpl/rusty-fim/actions)
 [![Rust Version](https://img.shields.io/badge/rust-1.70%2B-brightgreen.svg)](https://www.rust-lang.org)
 
 ## ✨ Features
@@ -44,7 +44,7 @@ A modern, blazingly fast, and reliable file integrity monitoring (FIM) system wr
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/rusty-fim.git
+git clone https://github.com/anubhavg-icpl/rusty-fim.git
 cd rusty-fim
 
 # Build with optimizations
@@ -62,7 +62,7 @@ cargo install rusty-fim
 
 ### Pre-built Binaries
 
-Download pre-built binaries from the [releases page](https://github.com/your-username/rusty-fim/releases).
+Download pre-built binaries from the [releases page](https://github.com/anubhavg-icpl/rusty-fim/releases).
 
 ## 🚀 Quick Start
 
@@ -390,7 +390,7 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 ```bash
 # Clone and setup
-git clone https://github.com/your-username/rusty-fim.git
+git clone https://github.com/anubhavg-icpl/rusty-fim.git
 cd rusty-fim
 
 # Install development dependencies
@@ -449,8 +449,8 @@ at your option.
 ## 📞 Support
 
 - 📖 [Documentation](https://docs.rs/rusty-fim)
-- 🐛 [Issue Tracker](https://github.com/your-username/rusty-fim/issues)
-- 💬 [Discussions](https://github.com/your-username/rusty-fim/discussions)
+- 🐛 [Issue Tracker](https://github.com/anubhavg-icpl/rusty-fim/issues)
+- 💬 [Discussions](https://github.com/anubhavg-icpl/rusty-fim/discussions)
 - 📧 [Security Issues](mailto:security@yourproject.com)
 
 ---
